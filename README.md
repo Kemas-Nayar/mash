@@ -107,7 +107,7 @@ Run:
 
 ```text
 .
-├── mash.cpp
+├── main.cpp
 └── README.md
 ```
 
