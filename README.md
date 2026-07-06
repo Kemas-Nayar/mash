@@ -92,7 +92,7 @@ cd mash
 Compile:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -O2 mash.cpp -o mash
+g++ -std=c++17 -Wall -Wextra -O2 main.cpp -o mash
 ```
 
 Run:
