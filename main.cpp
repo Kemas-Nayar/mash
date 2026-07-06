@@ -174,13 +174,16 @@ bool external_command(const std::vector<std::string>& args){
   } 
 
   else if (my_pid == 0){
-    char *myargs[50];
-    for(size_t i{0}; i<args.size(); ++i){
-      myargs[i] = strdup(args[i].c_str());
+    std::vector<char*> argv;
+
+    for(auto &s : args){
+      argv.push_back(const_cast<char*>(s.c_str()));
     }
-    myargs[args.size()] = nullptr;
-    execvp(myargs[0], myargs);
-    std::cerr << "mash: " << myargs[0] << ": command not found\n";
+    argv.push_back(nullptr);
+
+    execvp(argv[0], argv.data());
+
+    std::cerr << "mash: " << argv[0] << ": command not found\n";
     exit(EXIT_FAILURE);
   } 
 
@@ -251,14 +254,13 @@ int main()
               line = history[history_index];
               cursor = line.size();
               redraw_terminal(prompt, line, cursor);
-              history_index = line.size();
             }
 
             break;
 
           case 'B':
             //down
-            if(history_index < line.size()){
+            if(history_index < history.size()){
               history_index++;
               if(history_index == line.size()){
                 line.clear();
@@ -267,13 +269,12 @@ int main()
               }
               cursor = line.size();
               redraw_terminal(prompt, line, cursor);
-              history_index = line.size();
             }
             break;
 
           case 'C':
             //Right
-            if (cursor > 0){
+            if (cursor < line.size()){
               cursor++;
               std::cout << "\033[C" << std::flush;
             }
@@ -282,8 +283,10 @@ int main()
 
           case 'D':
             //Left
+            if(cursor > 0){
               cursor++;
               std::cout << "\033[D" << std::flush;
+            }
             break;
           }
         }
