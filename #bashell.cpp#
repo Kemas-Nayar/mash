@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <vector> 
+#include <sstream>
+
+// line jadi vector of string
+std::vector<std::string> parse_input(const std::string& line){
+  std::vector<std::string> tokens;
+  std::stringstream ss(line);
+  std::string token;
+
+  while(ss >> token){
+    tokens.push_back(token);
+  }
+
+  return tokens;
+}
+
+void clear_terminal(){
+  std::cout << "\033[2J\033[1;1H";
+}
+
+bool built_in(const std::vector<std::string>& args){
+  if(args[0] == "exit"){
+    clear_terminal();
+    exit(0);
+  }
+
+  if(args[0] == "clear") {
+    clear_terminal();
+    return true;
+  }
+
+  return false;
+}
+
+void throw_error(const std::vector<std::string>& args){
+  std::cout << "command: " << args[0] << " not found!\n";
+}
+
+int main()
+{
+  std::string line;
+  clear_terminal();
+
+  while(true){
+    std::cout << "$ " << std::flush;
+    if(!std::getline(std::cin, line)){
+        break;
+      }
+
+    std::vector<std::string> args = parse_input(line);
+
+    if(args.empty()) continue;
+
+    if(!built_in(args)){
+      throw_error(args);
+    }
+    
+  }
+
+  return 0;
+}
