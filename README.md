@@ -88,17 +88,10 @@ Clone the repository:
 git clone <repository-url>
 cd mash
 ```
-
-Compile:
-
-```bash
-g++ -std=c++17 -Wall -Wextra -O2 main.cpp -o mash
-```
-
 Run:
 
 ```bash
-./mash
+make run
 ```
 
 ---
